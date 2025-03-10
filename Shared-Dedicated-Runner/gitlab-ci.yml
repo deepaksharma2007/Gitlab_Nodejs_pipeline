@@ -1,0 +1,30 @@
+# to run job sequentially
+stages:
+- build
+- test
+- release
+
+# Run on shared runner 
+my build job:
+  stage: build
+  script:
+  - mkdir mybuild
+  - echo "welcome to Deepak Server!!" > mybuild/index.html
+  artifacts:
+    paths:
+    - mybuild/
+
+# Run on shared runner 
+my test job:
+  stage: test
+  script:
+  - grep welcome mybuild/index.html
+
+# To run job on our dedicated runner (linuxos is tag of our dedicated runner)
+my webapp project:
+  stage: release
+  tags:
+   - linuxos
+  script:
+     - hostname && date
+     - cp mybuild/index.html  /var/www/html/index.html
