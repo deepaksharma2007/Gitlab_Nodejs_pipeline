@@ -2,7 +2,7 @@ from flask import Flask
 
 import os
 
-app = Flask(_name)
+app = Flask(_name_)
 
 @app.route("/")
 def deep():
