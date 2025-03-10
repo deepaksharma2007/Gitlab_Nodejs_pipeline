@@ -6,4 +6,4 @@ ADD .  /app
 
 RUN pip install Flask
 
-CMD["python", "app.py"]
+CMD ["python", "app.py"]
