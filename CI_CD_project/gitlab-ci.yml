@@ -1,1 +1,22 @@
-hello
+my build job:
+    stage: build
+    tags:
+        - mybuild
+    script:
+        - hostname 
+        - echo "Hello , I am building..."
+        - whoami
+        - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+        - docker build -t registry.gitlab.com/lw3913704/my_ci_cd_pipeline/mypyapp:$CI_PIPELINE_ID .
+        - docker push  registry.gitlab.com/lw3913704/my_ci_cd_pipeline/mypyapp:$CI_PIPELINE_ID 
+
+my production job:
+    stage: deploy
+    tags:
+        - prod
+    script:
+        - hostname
+        - echo "i am deploying..."
+        - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+        - docker rm -f myapp || true 
+        - docker run -dit --name myapp  -p 80:8080 registry.gitlab.com/lw3913704/my_ci_cd_pipeline/mypyapp:$CI_PIPELINE_ID
